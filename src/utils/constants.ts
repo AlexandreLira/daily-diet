@@ -1,0 +1,1 @@
+export const PHOTO_URL = 'https://gravatar.com/avatar/aba88e07bbec4e836423fb3f4ce3cb3e?size=256'
