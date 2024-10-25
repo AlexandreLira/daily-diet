@@ -27,7 +27,7 @@ export const texts = StyleSheet.create({
         fontSize: 14
     },
     body_sx: {
-        fontFamily: fonts.regular,
+        fontFamily: fonts.bold,
         fontSize: 12
     },
 
