@@ -1,15 +1,23 @@
 import { theme } from "@/src/theme";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View } from "react-native";
 
-interface ButtonProps {
+interface ButtonProps extends TouchableOpacityProps {
     icon?: keyof typeof theme.icons;
     title: string;
+    outline?: boolean;
 }
 
 export function Button(props: ButtonProps) {
-    const { icon , title} = props
+    const {
+        icon,
+        title,
+        outline = false,
+        ...rest
+    } = props;
+
+    const styles = styling(outline)
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} {...rest}>
             {icon &&
                 <Image
                     source={theme.icons[icon]}
@@ -17,28 +25,30 @@ export function Button(props: ButtonProps) {
                 />
             }
             <Text style={styles.text}>{title}</Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
-const styles = StyleSheet.create({
+const styling = (outline: boolean) => StyleSheet.create({
     container: {
-        backgroundColor: theme.colors.gray_2,
+        backgroundColor: outline ? 'transparent' : theme.colors.gray_2,
         width: '100%',
         minHeight: 50,
         borderRadius: 6,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        gap: 20
+        gap: 20,
+        borderWidth: outline ? 1 : 0,
+        borderColor: theme.colors.gray_1
     },
     text: {
         ...theme.texts.title_sx,
-        color: theme.colors.white
+        color: outline ? theme.colors.gray_1 : theme.colors.white
     },
     icon: {
         width: 18,
         aspectRatio: 1,
-        tintColor: theme.colors.white
+        tintColor: outline ? theme.colors.gray_1 : theme.colors.white
     }
 })

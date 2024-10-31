@@ -1,21 +1,35 @@
+import { IMeal } from "@/src/models/Meal";
 import { theme } from "@/src/theme";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
-export function MealCard() {
-    const styles = styling()
+interface MealCardProps extends TouchableOpacityProps {
+    data: IMeal
+}
+
+
+export function MealCard(props: MealCardProps) {
+    const { data, ...rest } = props
+    const styles = styling(data.diet)
+
+    function hour(date: Date) {
+        const hour = String(date.getHours()).padStart(2, '0')
+        const minute = String(date.getMinutes()).padStart(2, '0')
+        return `${hour}:${minute}`
+    }
+
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} {...rest}>
             <View style={styles.wrapper}>
-                <Text style={styles.hour}>20:00</Text>
+                <Text style={styles.hour}>{hour(new Date(data.date))}</Text>
                 <View style={styles.line} />
-                <Text style={styles.description}>X-tudo</Text>
+                <Text style={styles.description}>{data.name}</Text>
             </View>
             <View style={styles.statusBall} />
-        </View>
+        </TouchableOpacity>
     )
 }
 
-const styling = () => StyleSheet.create({
+const styling = (diet: boolean) => StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -33,7 +47,10 @@ const styling = () => StyleSheet.create({
         alignItems: 'center'
     },
     line: {
-        width: 1, height: 14, backgroundColor: theme.colors.gray_4, borderRadius: 14
+        width: 1,
+        height: 14,
+        backgroundColor: theme.colors.gray_4,
+        borderRadius: 14
     },
     hour: {
         ...theme.texts.body_sx,
@@ -46,7 +63,7 @@ const styling = () => StyleSheet.create({
     statusBall: {
         width: 14,
         aspectRatio: 1,
-        backgroundColor: theme.colors.red_mid,
+        backgroundColor: diet ? theme.colors.green_mid : theme.colors.red_mid,
         borderRadius: 14
     }
 })
