@@ -1,3 +1,4 @@
+import { AlertModal } from "@/src/components/AlertModal";
 import { Button } from "@/src/components/Button";
 import { IMeal } from "@/src/models/Meal";
 
@@ -16,6 +17,7 @@ interface CreateOrEditMealProps extends NativeStackScreenProps<RootStackParamLis
 export function MealDetails({ navigation, route }: CreateOrEditMealProps) {
 
     const [meal, setMeal] = useState<IMeal>({} as IMeal)
+    const [deleteModal, setDeleteModal] = useState(false)
     const mealId = route.params?.id;
 
     const styles = styling(meal.diet)
@@ -80,10 +82,20 @@ export function MealDetails({ navigation, route }: CreateOrEditMealProps) {
                         title="Excluir refeição"
                         icon="trash"
                         outline
-                        onPress={handleDelete}
+                        onPress={() => setDeleteModal(true)}
                     />
                 </View>
             </View>
+
+            <AlertModal
+                visible={deleteModal}
+                title="Deseja realmente excluir o registro da refeição?"
+                cancelText="Cancelar"
+                confirmText="Sim, exluir"
+                onCancel={() => setDeleteModal(false)}
+                onConfirm={handleDelete}
+
+            />
         </SafeAreaView>
     )
 }

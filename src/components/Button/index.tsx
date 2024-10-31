@@ -12,12 +12,13 @@ export function Button(props: ButtonProps) {
         icon,
         title,
         outline = false,
+        style,
         ...rest
     } = props;
 
     const styles = styling(outline)
     return (
-        <TouchableOpacity style={styles.container} {...rest}>
+        <TouchableOpacity style={[styles.container, style]} {...rest}>
             {icon &&
                 <Image
                     source={theme.icons[icon]}
@@ -32,7 +33,6 @@ export function Button(props: ButtonProps) {
 const styling = (outline: boolean) => StyleSheet.create({
     container: {
         backgroundColor: outline ? 'transparent' : theme.colors.gray_2,
-        width: '100%',
         minHeight: 50,
         borderRadius: 6,
         justifyContent: 'center',
