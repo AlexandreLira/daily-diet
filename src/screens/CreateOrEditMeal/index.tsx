@@ -5,19 +5,19 @@ import { RootStackParamList } from "@/src/routes";
 import { theme } from "@/src/theme";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Controller, useForm } from "react-hook-form";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { IMealForm, schema } from "./schema";
 import { DateTimePicker } from "@/src/components/DatePicker";
 import { MealService } from "@/src/services/MealService";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface CreateOrEditMealProps extends NativeStackScreenProps<RootStackParamList, 'CreateOrEditMeal'> { }
 
 
 export function CreateOrEditMeal({ navigation, route }: CreateOrEditMealProps) {
-
+    const [createdModal, setCreatedModal] = useState(false)
     const { control, handleSubmit, reset } = useForm<IMealForm>({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -35,16 +35,16 @@ export function CreateOrEditMeal({ navigation, route }: CreateOrEditMealProps) {
 
         try {
 
-            if (mealId) {
-                await MealService.update({
-                    id: mealId,
-                    ...data
-                })
-                navigation.navigate('Home')
-                return
-            }
-            await MealService.create(data)
-            navigation.navigate('Home')
+            // if (mealId) {
+            //     await MealService.update({
+            //         id: mealId,
+            //         ...data
+            //     })
+            //     navigation.navigate('Home')
+            //     return
+            // }
+            // await MealService.create(data)
+            navigation.navigate('CreatedMeal', { diet: Boolean(data.diet) })
         } catch {
 
         } finally {
