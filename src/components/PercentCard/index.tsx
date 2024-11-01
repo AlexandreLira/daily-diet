@@ -1,35 +1,35 @@
 import { theme } from "@/src/theme"
-import { Image, StyleSheet, Text, View, ViewProps } from "react-native"
+import { Image, StyleSheet, Text, TouchableOpacity, TouchableOpacityProps, View, ViewProps } from "react-native"
 
-interface PercentCardProps extends ViewProps {
+interface PercentCardProps extends TouchableOpacityProps {
     value: number;
 }
 
 export function PercentCard(props: PercentCardProps) {
-    const { value } = props;
+    const { value, ...rest } = props;
 
-    const styles = styling()
+    const styles = styling(value)
     return (
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} {...rest}>
             <Image
                 source={theme.icons.arrow_up_right}
                 style={styles.icon}
             />
             <Text style={styles.title}>
-                {value}%
+                {value?.toFixed(2)}%
             </Text>
             <Text style={styles.label}>
                 Das refeições dentro da dieta
             </Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 
-const styling = () => StyleSheet.create({
+const styling = (porcetage: number) => StyleSheet.create({
     card: {
         borderRadius: 8,
         width: '100%',
-        backgroundColor: theme.colors.green_light,
+        backgroundColor: porcetage > 50 ? theme.colors.green_light : theme.colors.red_light,
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 20,
@@ -48,6 +48,6 @@ const styling = () => StyleSheet.create({
         position: 'absolute',
         right: 8,
         top: 8,
-        tintColor: theme.colors.green_dark
+        tintColor: porcetage > 50 ? theme.colors.green_dark : theme.colors.red_dark,
     }
 })

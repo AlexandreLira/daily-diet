@@ -4,6 +4,7 @@ import { PercentCard } from "@/src/components/PercentCard";
 import { IMeal } from "@/src/models/Meal";
 import { RootStackParamList } from "@/src/routes";
 import { MealService } from "@/src/services/MealService";
+import { IStatistics, StatisticsService } from "@/src/services/StatisticsService";
 import { theme } from "@/src/theme";
 import { images } from "@/src/theme/images";
 import { PHOTO_URL } from "@/src/utils/constants";
@@ -23,6 +24,7 @@ interface IMealSection {
 export function Home({ navigation }: HomeProps) {
 
     const [list, setList] = useState<IMealSection[]>([])
+    const [statistics, setStatistics] = useState({} as IStatistics)
 
 
 
@@ -33,10 +35,6 @@ export function Home({ navigation }: HomeProps) {
     async function getMeals() {
         const meals = await MealService.getAll()
 
-        const transformedArray = meals.map(item => ({
-            title: new Date(item.date).toLocaleDateString('pt-BR'),
-            data: [item]
-        }));
 
         const a = meals.reduce((result, meal) => {
 
@@ -81,7 +79,13 @@ export function Home({ navigation }: HomeProps) {
 
     }
 
+    async function loadStatistics() {
+        const data = await StatisticsService.calculate()
+        setStatistics(data)
+    }
+
     useFocusEffect(useCallback(() => {
+        loadStatistics()
         getMeals()
     }, []))
 
@@ -97,7 +101,8 @@ export function Home({ navigation }: HomeProps) {
             </View>
 
             <PercentCard
-                value={90.86}
+                onPress={() => navigation.navigate('Statistics')}
+                value={statistics?.percentage}
             />
 
             <View>

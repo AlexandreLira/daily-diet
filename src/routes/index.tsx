@@ -6,14 +6,16 @@ import { CreateOrEditMeal } from "../screens/CreateOrEditMeal";
 import { IMeal } from "../models/Meal";
 import { MealDetails } from "../screens/MealDetails";
 import { CreatedMeal } from "../screens/CreatedMeal";
+import { Statistics } from "../screens/Statistics";
 
 export type RootStackParamList = {
     Home: undefined;
     CreateOrEditMeal: Pick<IMeal, 'id'> | undefined;
     MealDetails: Pick<IMeal, 'id'>;
-    CreatedMeal: Pick<IMeal, 'diet'>
-
+    CreatedMeal: Pick<IMeal, 'diet'>;
+    Statistics: undefined;
 };
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function Routes() {
@@ -30,6 +32,11 @@ export function Routes() {
                 <Stack.Screen
                     name="CreateOrEditMeal"
                     component={CreateOrEditMeal}
+                    options={{ animation: 'fade_from_bottom' }}
+                />
+                <Stack.Screen
+                    name="Statistics"
+                    component={Statistics}
                     options={{ animation: 'fade_from_bottom' }}
                 />
             </Stack.Navigator>

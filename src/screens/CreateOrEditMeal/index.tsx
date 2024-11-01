@@ -17,7 +17,6 @@ interface CreateOrEditMealProps extends NativeStackScreenProps<RootStackParamLis
 
 
 export function CreateOrEditMeal({ navigation, route }: CreateOrEditMealProps) {
-    const [createdModal, setCreatedModal] = useState(false)
     const { control, handleSubmit, reset } = useForm<IMealForm>({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -35,15 +34,15 @@ export function CreateOrEditMeal({ navigation, route }: CreateOrEditMealProps) {
 
         try {
 
-            // if (mealId) {
-            //     await MealService.update({
-            //         id: mealId,
-            //         ...data
-            //     })
-            //     navigation.navigate('Home')
-            //     return
-            // }
-            // await MealService.create(data)
+            if (mealId) {
+                await MealService.update({
+                    id: mealId,
+                    ...data
+                })
+                navigation.navigate('Home')
+                return
+            }
+            await MealService.create(data)
             navigation.navigate('CreatedMeal', { diet: Boolean(data.diet) })
         } catch {
 
